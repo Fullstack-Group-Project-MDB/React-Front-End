@@ -60,3 +60,16 @@ export const addListing = async (listing) => {
 
   return resp.json();
 };
+
+export const deleteById = async (id) => {
+  const resp = await fetch(`${process.env.API_URL}/api/v1/listings/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application.json',
+    },
+    credentials: 'include',
+    mode: 'cors',
+  });
+  if (!resp.ok) throw new Error('there was a problem deleting your listing, ya dummy');
+  return resp.json();
+}

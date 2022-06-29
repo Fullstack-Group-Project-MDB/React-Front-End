@@ -1,15 +1,16 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import ListingForm from '../components/ListingForm';
-import { getListingById, updateById } from '../services/listings';
+import { getListingById, updateById, deleteById } from '../services/listings';
 
 function ListingDetail() {
   const { id } = useParams();
   const [listing, setListing] = useState();
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     getListingById(id)
@@ -30,10 +31,15 @@ function ListingDetail() {
   };
   if (loading) return <div>loading...</div>;
 
+  const handleDelete = async () => {
+    await deleteById(id);
+    history.push('/');
+  }
+
   return (
     <div>
       {!isEditing && <p onClick={() => setIsEditing(true)}>✏️</p>}
-      <p>🗑️</p>
+      <p onClick={handleDelete}>🗑️</p>
       {isEditing ? (
         <div>
           <ListingForm
