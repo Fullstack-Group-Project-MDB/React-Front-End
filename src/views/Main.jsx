@@ -18,7 +18,7 @@ function Main() {
 
   return (
     <>
-      <ListingForm />
+      <ListingForm setListings={setListings} />
       {listings.map((listing) => (
         <ul key={listing.id}>
           <Link to={`/listings/${listing.id}`}>

@@ -1,3 +1,5 @@
+import { getByTitle } from "@testing-library/react";
+
 export const getAllListings = async () => {
   const resp = await fetch(`${process.env.API_URL}/api/v1/listings`, {
     method: 'GET',
@@ -25,3 +27,22 @@ export const getListingById = async (id) => {
 
   return resp.json();
 };
+
+export const addListing = async (listing) => {
+  const { title, content } = listing;
+  if (!title || !content) throw new Error('please fill out all fields');
+
+  const resp = await fetch(`${process.env.API_URL}/api/v1/listings`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    mode: 'cors',
+    body: JSON.stringify(listing)
+  });
+
+  if (!resp.ok) throw new Error('there was a problem adding your listing');
+
+  return resp.json();
+}

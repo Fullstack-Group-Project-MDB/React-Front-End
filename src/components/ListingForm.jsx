@@ -1,14 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from '../hooks/useForm';
+import { addListing } from '../services/listings';
 
-function ListingForm() {
-  const { formState, handleChange } = useForm({ title: '', content: '' });
+function ListingForm({setListings}) {
+  const { formState, clearForm, handleChange } = useForm({ title: '', content: '' });
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    try{
+      e.preventDefault();
+      setErrorMessage('');
+      const newListing = await addListing(formState);
+      setListings((prev) => ([ ...prev, newListing ]))
+      clearForm();
+    } catch (e) {
+      setErrorMessage(e.message);
+    }
   };
+  
   return (
     <form onSubmit={handleSubmit}>
+      <p>{errorMessage}</p>
       <label htmlFor="Title-Input">
         <input
           placeholder="Title"

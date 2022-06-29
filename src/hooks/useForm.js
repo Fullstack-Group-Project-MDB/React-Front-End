@@ -2,7 +2,6 @@ import { useState } from 'react';
 
 export function useForm(inputs = {}) {
   const [formState, setFormState] = useState({ ...inputs });
-  console.log('formState', formState);
   const handleChange = (event) => {
     const { name, value } = event.target;
 
@@ -14,5 +13,11 @@ export function useForm(inputs = {}) {
     });
   };
 
-  return { formState, handleChange };
+  const clearForm = () => {
+    for (let key in formState) {
+      setFormState(prev => ({...prev, [key]: ''})) 
+    }
+  };
+
+  return { formState, handleChange, clearForm };
 }
