@@ -18,7 +18,7 @@ function ListingForm({ crudFunction, setter, initialState }) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <p>{errorMessage}</p>
+      {errorMessage && <p>{errorMessage}</p>}
       <label htmlFor="Title-Input">
         <input
           placeholder="Title"

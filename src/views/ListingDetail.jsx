@@ -2,7 +2,8 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getListingById } from '../services/listings';
+import ListingForm from '../components/ListingForm';
+import { getListingById, updateById } from '../services/listings';
 
 function ListingDetail() {
   const { id } = useParams();
@@ -16,6 +17,17 @@ function ListingDetail() {
       .then(() => setLoading(false))
       .catch((e) => console.error(e));
   }, [id]);
+
+  const updateFunction = async (formState) => {
+    setLoading(true);
+    const updatedListing = await updateById(id, formState);
+    setLoading(false);
+    return updatedListing;
+  };
+  const updateListing = async (data) => {
+    setListing(data);
+    setIsEditing(false);
+  };
   if (loading) return <div>loading...</div>;
 
   return (
@@ -24,7 +36,11 @@ function ListingDetail() {
       <p>🗑️</p>
       {isEditing ? (
         <div>
-          <button onClick={() => setIsEditing(false)}>Save</button>
+          <ListingForm
+            setter={updateListing}
+            initialState={listing}
+            crudFunction={updateFunction}
+          />
         </div>
       ) : (
         <>

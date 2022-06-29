@@ -1,4 +1,4 @@
-import { getByTitle } from "@testing-library/react";
+import { getByTitle } from '@testing-library/react';
 
 export const getAllListings = async () => {
   const resp = await fetch(`${process.env.API_URL}/api/v1/listings`, {
@@ -27,6 +27,20 @@ export const getListingById = async (id) => {
 
   return resp.json();
 };
+export const updateById = async (id, attrs) => {
+  const resp = await fetch(`${process.env.API_URL}/api/v1/listings/${id}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+    mode: 'cors',
+    body: JSON.stringify(attrs),
+  });
+  if (!resp.ok) throw new Error('there was a problem ');
+
+  return resp.json();
+};
 
 export const addListing = async (listing) => {
   const { title, content } = listing;
@@ -39,10 +53,10 @@ export const addListing = async (listing) => {
     },
     credentials: 'include',
     mode: 'cors',
-    body: JSON.stringify(listing)
+    body: JSON.stringify(listing),
   });
 
   if (!resp.ok) throw new Error('there was a problem adding your listing');
 
   return resp.json();
-}
+};
