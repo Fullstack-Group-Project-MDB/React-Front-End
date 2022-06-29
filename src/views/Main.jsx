@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import ListingForm from '../components/ListingForm';
-import { getAllListings } from '../services/listings';
+import { addListing, getAllListings } from '../services/listings';
 
 function Main() {
   const [listings, setListings] = useState([]);
@@ -16,9 +16,17 @@ function Main() {
     getData();
   }, []);
 
+  const listingSetter = (listing) => {
+    setListings((prev) => [...prev, listing]);
+  };
+
   return (
     <>
-      <ListingForm setListings={setListings} />
+      <ListingForm
+        setter={listingSetter}
+        initialState={{ title: '', content: '' }}
+        crudFunction={addListing}
+      />
       {listings.map((listing) => (
         <ul key={listing.id}>
           <Link to={`/listings/${listing.id}`}>

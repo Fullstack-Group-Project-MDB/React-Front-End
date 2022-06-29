@@ -1,23 +1,21 @@
 import React, { useState } from 'react';
 import { useForm } from '../hooks/useForm';
-import { addListing } from '../services/listings';
 
-function ListingForm({setListings}) {
-  const { formState, clearForm, handleChange } = useForm({ title: '', content: '' });
+function ListingForm({ crudFunction, setter, initialState }) {
+  const { formState, clearForm, handleChange } = useForm(initialState);
   const [errorMessage, setErrorMessage] = useState('');
-
   const handleSubmit = async (e) => {
-    try{
+    try {
       e.preventDefault();
       setErrorMessage('');
-      const newListing = await addListing(formState);
-      setListings((prev) => ([ ...prev, newListing ]))
+      const newListing = await crudFunction(formState);
+      setter(newListing);
       clearForm();
     } catch (e) {
       setErrorMessage(e.message);
     }
   };
-  
+
   return (
     <form onSubmit={handleSubmit}>
       <p>{errorMessage}</p>

@@ -8,6 +8,7 @@ function ListingDetail() {
   const { id } = useParams();
   const [listing, setListing] = useState();
   const [loading, setLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     getListingById(id)
@@ -19,8 +20,18 @@ function ListingDetail() {
 
   return (
     <div>
-      <h1>{listing.title}</h1>
-      <p>{listing.content}</p>
+      {!isEditing && <p onClick={() => setIsEditing(true)}>✏️</p>}
+      <p>🗑️</p>
+      {isEditing ? (
+        <div>
+          <button onClick={() => setIsEditing(false)}>Save</button>
+        </div>
+      ) : (
+        <>
+          <h1>{listing.title}</h1>
+          <p>{listing.content}</p>
+        </>
+      )}
     </div>
   );
 }
