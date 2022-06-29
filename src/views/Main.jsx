@@ -2,6 +2,7 @@ import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import ListingForm from '../components/ListingForm';
 import { getAllListings } from '../services/listings';
 
 function Main() {
@@ -17,6 +18,7 @@ function Main() {
 
   return (
     <>
+      <ListingForm />
       {listings.map((listing) => (
         <ul key={listing.id}>
           <Link to={`/listings/${listing.id}`}>
