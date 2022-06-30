@@ -25,3 +25,15 @@ export const signIn = async ({ email, password }) => {
 
   return resp.json();
 }
+
+export const getUser = async () => {
+  try {
+    const resp = await fetch(`${process.env.API_URL}/api/v1/users/me`, {
+      credentials: 'include',
+    });
+    return resp.json();
+  } catch (e) {
+    console.log(e.message);
+    return null;
+  }
+}

@@ -5,9 +5,11 @@ import { BrowserRouter as Router } from 'react-router-dom';
 
 render(
   <React.StrictMode>
-    <Router>
-      <App />
-    </Router>
+    <userProvider>
+      <Router>
+        <App />
+      </Router>
+    </userProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
