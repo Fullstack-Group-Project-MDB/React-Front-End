@@ -1,8 +1,9 @@
 import React from 'react';
 import { useEffect } from 'react';
 import { useState } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import ListingForm from '../components/ListingForm';
+import { useUserContext } from '../context/userContext';
 import { getListingById, updateById, deleteById } from '../services/listings';
 
 function ListingDetail() {
@@ -11,6 +12,7 @@ function ListingDetail() {
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const history = useHistory();
+  const { currentUser } = useUserContext();
 
   useEffect(() => {
     getListingById(id)
@@ -34,12 +36,18 @@ function ListingDetail() {
   const handleDelete = async () => {
     await deleteById(id);
     history.push('/');
-  }
+  };
 
   return (
     <div>
-      {!isEditing && <p onClick={() => setIsEditing(true)}>✏️</p>}
-      <p onClick={handleDelete}>🗑️</p>
+      {currentUser.email ? (
+        <>
+          {!isEditing && <p onClick={() => setIsEditing(true)}>✏️</p>}
+          <p onClick={handleDelete}>🗑️</p>
+        </>
+      ) : (
+        <Link to="/auth">Sign in to update/delete</Link>
+      )}
       {isEditing ? (
         <div>
           <ListingForm

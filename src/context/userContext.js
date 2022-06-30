@@ -3,13 +3,13 @@ import { getUser } from '../services/users';
 
 const UserContext = createContext();
 const UserProvider = ({ children }) => {
+  const [currentUser, setCurrentUser] = useState({ email: null });
   useEffect(() => {
     getUser()
       .then((user) => setCurrentUser(user))
       .then((user) => console.log(user))
       .catch((e) => console.error(e));
   }, []);
-  const [currentUser, setCurrentUser] = useState({ email: null });
   return (
     <UserContext.Provider value={{ currentUser, setCurrentUser }}>
       {children}
