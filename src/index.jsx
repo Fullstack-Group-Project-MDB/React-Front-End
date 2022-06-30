@@ -2,14 +2,15 @@ import React from 'react';
 import { render } from 'react-dom';
 import App from './App';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { UserProvider } from './context/userContext';
 
 render(
   <React.StrictMode>
-    <userProvider>
+    <UserProvider>
       <Router>
         <App />
       </Router>
-    </userProvider>
+    </UserProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

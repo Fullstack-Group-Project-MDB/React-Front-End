@@ -1,21 +1,27 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { getUser } from '../services/users';
 
-const userContext = createContext();
-const userProvider = ({ children }) => {
-  const user = getUser();
-  const [currentUser, setCurrentUser] = useState(user || { email: null });
+const UserContext = createContext();
+const UserProvider = ({ children }) => {
+  useEffect(() => {
+    getUser()
+      .then((user) => setCurrentUser(user))
+      .then((user) => console.log(user))
+      .catch((e) => console.error(e));
+  }, []);
+  const [currentUser, setCurrentUser] = useState({ email: null });
   return (
-    <userContext.Provider value={{currentUser, setCurrentUser}}>
+    <UserContext.Provider value={{ currentUser, setCurrentUser }}>
       {children}
-    </userContext.Provider>
-  )
-}
+    </UserContext.Provider>
+  );
+};
 
 const useUserContext = () => {
-  const data = useContext(userContext);
-  if (data === undefined) throw new Error('UserContext must be wrapped in a provider');
+  const data = useContext(UserContext);
+  if (data === undefined)
+    throw new Error('UserContext must be wrapped in a provider');
   return data;
-}
+};
 
-export { userProvider, useUserContext, userContext };
+export { UserProvider, useUserContext, UserContext };
